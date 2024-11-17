@@ -12,45 +12,34 @@
 
 #include "ft_printf.h"
 
-static char	*ft_strcpy(char *dest, char *src)
+static int	fill_buffer(unsigned long b, char *buffer, const char *src)
 {
-	int	x;
+	int	i;
 
-	x = 0;
-	while (src[x] != '\0')
+	i = 0;
+	while (b)
 	{
-		dest[x] = src[x];
-		x++;
+		buffer[i++] = src[b % 16];
+		b /= 16;
 	}
-	dest[x] = '\0';
-	return (dest);
+	buffer[i++] = 'x';
+	buffer[i++] = '0';
+	return (i);
 }
 
 int	ft_putaddress(void *p)
 {
+	char			buffer[17];
+	const char		*src = "0123456789abcdef";
+	unsigned long	b;
 	int				i;
 	int				counter;
-	char			src[16];
-	char			buffer[17];
-	unsigned long	b;
 
-	if (!p)
-	{
-		write(1, "(nil)", 5);
-		return (5);
-	}
-	ft_strcpy(src, "0123456789abcdef");
-	i = 0;
-	counter = 0;
 	b = (unsigned long)p;
-	while (b)
-	{
-		buffer[i] = src[b % 16];
-		b /= 16;
-		i++;
-	}
-	buffer[i++] = 'x';
-	buffer[i++] = '0';
+	if (!p)
+		return (write(1, "(nil)", 5));
+	i = fill_buffer(b, buffer, src);
+	counter = 0;
 	while (--i >= 0)
 		counter += ft_putchar(buffer[i]);
 	return (counter);

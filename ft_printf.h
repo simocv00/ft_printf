@@ -6,7 +6,7 @@
 /*   By: melayyad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 15:06:52 by melayyad          #+#    #+#             */
-/*   Updated: 2024/11/17 15:06:55 by melayyad         ###   ########.fr       */
+/*   Updated: 2024/11/17 19:27:43 by melayyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdarg.h>
 # include <unistd.h>
 
+int	ft_printf(const char *format, ...);
 int	ft_putaddress(void *p);
 int	ft_putchar(char c);
 int	ft_puthex(unsigned int nb, char X);

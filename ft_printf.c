@@ -12,6 +12,25 @@
 
 #include "ft_printf.h"
 
+static size_t	handle_format(const char format, va_list args)
+{
+	if (format == 'd' || format == 'i')
+		return (ft_putnbr(va_arg(args, int)));
+	else if (format == 's')
+		return (ft_putstr(va_arg(args, char *)));
+	else if (format == 'c')
+		return (ft_putchar(va_arg(args, int)));
+	else if (format == 'u')
+		return (ft_utnbr(va_arg(args, unsigned int)));
+	else if (format == 'x' || format == 'X')
+		return (ft_puthex(va_arg(args, unsigned int), format));
+	else if (format == 'p')
+		return (ft_putaddress(va_arg(args, void *)));
+	else if (format == '%')
+		return (ft_putchar('%'));
+	return (ft_putchar(format));
+}
+
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
@@ -22,27 +41,7 @@ int	ft_printf(const char *format, ...)
 	while (*format)
 	{
 		if (*format == '%')
-		{
-			format++;
-			if (*format == 'd' || *format == 'i')
-			{
-				counter += ft_putnbr(va_arg(args, int));
-			}
-			else if (*format == 's')
-				counter += ft_putstr(va_arg(args, char *));
-			else if (*format == 'c')
-				counter += ft_putchar(va_arg(args, int));
-			else if (*format == 'u')
-				counter += ft_utnbr(va_arg(args, unsigned int));
-			else if (*format == 'x' || *format == 'X')
-				counter += ft_puthex(va_arg(args, unsigned int), *format);
-			else if (*format == 'p')
-				counter += ft_putaddress(va_arg(args, void *));
-			else if (*format == '%')
-				counter += ft_putchar('%');
-			else
-				counter += ft_putchar(*format);
-		}
+			counter += handle_format(*(++format), args);
 		else
 			counter += ft_putchar(*format);
 		format++;
